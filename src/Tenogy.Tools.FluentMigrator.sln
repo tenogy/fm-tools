@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenogy.Tools.FluentMigrator.AddMigration", "Tenogy.Tools.FluentMigrator.AddMigration\Tenogy.Tools.FluentMigrator.AddMigration.csproj", "{1AE588AE-0E20-4130-A7FE-5A38B62B6139}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenogy.Tools.FluentMigrator", "Tenogy.Tools.FluentMigrator\Tenogy.Tools.FluentMigrator.csproj", "{0DE4CD79-CC3E-4B39-9961-8913A71025FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MigrationsProject", "MigrationsProject\MigrationsProject.csproj", "{C2142324-8E1C-45E7-BDBD-51902B47415A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "@common", "@common", "{A5643D54-32D1-4586-AD6B-5731D5F1A932}"
+	ProjectSection(SolutionItems) = preProject
+		..\README.MD = ..\README.MD
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenogy.Tools.FluentMigrator.AddMigration.Console", "Tenogy.Tools.FluentMigrator.AddMigration.Console\Tenogy.Tools.FluentMigrator.AddMigration.Console.csproj", "{75B06E4F-9CCF-472D-9F50-773AA7AEF5D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenogy.Tools.FluentMigrator.UpdateDatabase", "Tenogy.Tools.FluentMigrator.UpdateDatabase\Tenogy.Tools.FluentMigrator.UpdateDatabase.csproj", "{627208F3-402F-404C-83F8-0D1F6A50DC68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tenogy.Tools.FluentMigrator.UpdateDatabase.Console", "Tenogy.Tools.FluentMigrator.UpdateDatabase.Console\Tenogy.Tools.FluentMigrator.UpdateDatabase.Console.csproj", "{CBE10759-645B-4C25-AB39-5EB98238CE56}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1AE588AE-0E20-4130-A7FE-5A38B62B6139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AE588AE-0E20-4130-A7FE-5A38B62B6139}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AE588AE-0E20-4130-A7FE-5A38B62B6139}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AE588AE-0E20-4130-A7FE-5A38B62B6139}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DE4CD79-CC3E-4B39-9961-8913A71025FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DE4CD79-CC3E-4B39-9961-8913A71025FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DE4CD79-CC3E-4B39-9961-8913A71025FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DE4CD79-CC3E-4B39-9961-8913A71025FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2142324-8E1C-45E7-BDBD-51902B47415A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2142324-8E1C-45E7-BDBD-51902B47415A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2142324-8E1C-45E7-BDBD-51902B47415A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2142324-8E1C-45E7-BDBD-51902B47415A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75B06E4F-9CCF-472D-9F50-773AA7AEF5D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75B06E4F-9CCF-472D-9F50-773AA7AEF5D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75B06E4F-9CCF-472D-9F50-773AA7AEF5D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75B06E4F-9CCF-472D-9F50-773AA7AEF5D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{627208F3-402F-404C-83F8-0D1F6A50DC68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{627208F3-402F-404C-83F8-0D1F6A50DC68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{627208F3-402F-404C-83F8-0D1F6A50DC68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{627208F3-402F-404C-83F8-0D1F6A50DC68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBE10759-645B-4C25-AB39-5EB98238CE56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBE10759-645B-4C25-AB39-5EB98238CE56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBE10759-645B-4C25-AB39-5EB98238CE56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBE10759-645B-4C25-AB39-5EB98238CE56}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
