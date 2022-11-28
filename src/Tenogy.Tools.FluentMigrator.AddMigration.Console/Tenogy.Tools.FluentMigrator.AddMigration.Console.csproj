@@ -9,6 +9,7 @@
 		<PackAsTool>true</PackAsTool>
 		<ToolCommandName>add-migration</ToolCommandName>
 		<PackageOutputPath>./../../dist/nupkg</PackageOutputPath>
+		<PackageId>Tenogy.Tools.FluentMigrator.AddMigration</PackageId>
 		<Version>1.0.0</Version>
 	</PropertyGroup>
 
