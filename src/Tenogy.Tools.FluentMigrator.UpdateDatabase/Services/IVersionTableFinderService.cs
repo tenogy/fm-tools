@@ -3,10 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using FluentMigrator.Runner.VersionTableInfo;
-using Microsoft.Extensions.Logging;
+using Tenogy.Tools.FluentMigrator.Helpers;
 
-// ReSharper disable once CheckNamespace
-namespace Tenogy.Tools.FluentMigrator.Services;
+namespace Tenogy.Tools.FluentMigrator.UpdateDatabase.Services;
 
 public interface IVersionTableFinderService
 {
@@ -15,34 +14,25 @@ public interface IVersionTableFinderService
 
 public sealed class VersionTableFinderService : IVersionTableFinderService
 {
-	private readonly ILogger<VersionTableFinderService>? _logger;
-
-	public static readonly VersionTableFinderService Default = new(null);
-
-	public VersionTableFinderService(
-		ILogger<VersionTableFinderService>? logger
-	)
-	{
-		_logger = logger;
-	}
+	public static readonly VersionTableFinderService Default = new();
 
 	public IVersionTableMetaData? Search(FileInfo assemblyFileInfo)
 		=> FindInAssembly(Assembly.LoadFrom(assemblyFileInfo.FullName)) ?? TryFindInTenogyAppFluentMigrator(assemblyFileInfo.Directory!);
 
 	private IVersionTableMetaData? FindInAssembly(Assembly assembly)
 	{
-		_logger?.LogDebug("Trying to find IVersionTableMetaData in assembly '{Assembly}'...", assembly.FullName);
+		ConsoleLogger.LogDebug("Trying to find IVersionTableMetaData in assembly '{Assembly}'...", assembly.FullName);
 
 		var versionTableMetaDataType = typeof(IVersionTableMetaData);
 		var type = assembly.GetTypes().FirstOrDefault(versionTableMetaDataType.IsAssignableFrom);
 
 		if (type == null)
 		{
-			_logger?.LogDebug("IVersionTableMetaData not found in assembly '{Assembly}'", assembly.FullName);
+			ConsoleLogger.LogDebug("IVersionTableMetaData not found in assembly '{Assembly}'", assembly.FullName);
 			return null;
 		}
 
-		_logger?.LogDebug("Creating instance of {IVersionTableMetaData}...", type.FullName);
+		ConsoleLogger.LogDebug("Creating instance of {IVersionTableMetaData}...", type.FullName);
 		return Activator.CreateInstance(type) as IVersionTableMetaData;
 	}
 

@@ -9,10 +9,9 @@ using FluentMigrator.Runner.Processors;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Tenogy.Tools.FluentMigrator.Helpers;
-using Tenogy.Tools.FluentMigrator.Options;
+using Tenogy.Tools.FluentMigrator.UpdateDatabase.Options;
 
-// ReSharper disable once CheckNamespace
-namespace Tenogy.Tools.FluentMigrator.Services;
+namespace Tenogy.Tools.FluentMigrator.UpdateDatabase.Services;
 
 public interface IFluentMigratorRunnerService
 {
@@ -21,24 +20,21 @@ public interface IFluentMigratorRunnerService
 
 public sealed class FluentMigratorRunnerService : IFluentMigratorRunnerService
 {
-	private readonly ILogger<FluentMigratorRunnerService>? _logger;
 	private readonly IVersionTableFinderService _versionTableFinderService;
 
-	public static readonly FluentMigratorRunnerService Default = new(null, null);
+	public static readonly FluentMigratorRunnerService Default = new(null);
 
 	public FluentMigratorRunnerService(
-		ILogger<FluentMigratorRunnerService>? logger,
 		IVersionTableFinderService? versionTableFinderService
 	)
 	{
-		_logger = logger;
 		_versionTableFinderService = versionTableFinderService ?? VersionTableFinderService.Default;
 	}
 
 	public void Run(FluentMigratorRunnerOptions options)
 	{
 		ConsoleColored.WriteMutedLine("Trying to send a command to the FluentMigrator...");
-		_logger?.LogDebug("Trying to send a command to the FluentMigrator...");
+		ConsoleLogger.LogDebug("Trying to send a command to the FluentMigrator...");
 
 		var services = GetServiceCollection(options);
 
@@ -46,8 +42,7 @@ public sealed class FluentMigratorRunnerService : IFluentMigratorRunnerService
 			services.AddSingleton<ILoggerProvider, FluentMigratorConsoleLoggerProvider>();
 
 		if (options.Output)
-			services
-				.Configure<LogFileFluentMigratorLoggerOptions>(opt =>
+			services.Configure<LogFileFluentMigratorLoggerOptions>(opt =>
 				{
 					opt.ShowSql = true;
 					opt.OutputFileName = options.OutputFileName;
@@ -61,7 +56,7 @@ public sealed class FluentMigratorRunnerService : IFluentMigratorRunnerService
 		executor.Execute();
 
 		ConsoleColored.WriteInfoLine("The FluentMigrator successfully processed the command.");
-		_logger?.LogInformation("The FluentMigrator successfully processed the command");
+		ConsoleLogger.LogInformation("The FluentMigrator successfully processed the command");
 	}
 
 	private IServiceCollection GetServiceCollection(FluentMigratorRunnerOptions options)

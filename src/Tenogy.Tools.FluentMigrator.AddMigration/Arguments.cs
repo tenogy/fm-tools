@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using CommandLine;
+using Tenogy.Tools.FluentMigrator.Options;
 
-namespace Tenogy.Tools.FluentMigrator.AddMigration.Console;
+namespace Tenogy.Tools.FluentMigrator.AddMigration;
 
-internal sealed class Arguments
+internal sealed class Arguments : IArguments
 {
 	[Value(0, MetaName = "Migration name", Required = true, HelpText = "The name of your migration.")]
 	public string? MigrationName { get; set; }
@@ -16,7 +17,7 @@ internal sealed class Arguments
 	public bool Verbose { get; set; }
 
 	[Option("environment", Hidden = true)]
-	public bool Environment { get; set; }
+	public string? Environment { get; set; }
 
 	public static Arguments? Create(IEnumerable<string> args)
 	{

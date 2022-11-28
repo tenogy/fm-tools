@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
+using Tenogy.Tools.FluentMigrator.Helpers;
 
 namespace Tenogy.Tools.FluentMigrator.Services;
 
@@ -18,15 +18,10 @@ public interface IProcessRunnerService
 
 public sealed class ProcessRunnerService : IProcessRunnerService
 {
-	private readonly ILogger<ProcessRunnerService>? _logger;
+	public static readonly ProcessRunnerService Default = new();
 
-	public static readonly ProcessRunnerService Default = new(null);
-
-	public ProcessRunnerService(
-		ILogger<ProcessRunnerService>? logger
-	)
+	public ProcessRunnerService()
 	{
-		_logger = logger;
 	}
 
 	private static ProcessStartInfo GetDefaultProcessStartInfo(string exe, string? arguments = null, bool useShellExecute = false)
@@ -48,7 +43,7 @@ public sealed class ProcessRunnerService : IProcessRunnerService
 	{
 		var (process, processCommand) = CreateProcess(processStartInfo);
 
-		_logger?.LogDebug("Run process: {ProcessCommand}", processCommand);
+		ConsoleLogger.LogDebug("Run process: {ProcessCommand}", processCommand);
 
 		await Task.Run(() =>
 		{
@@ -64,12 +59,12 @@ public sealed class ProcessRunnerService : IProcessRunnerService
 	{
 		var (process, processCommand) = CreateProcess(processStartInfo);
 
-		_logger?.LogDebug("Run and wait process: {ProcessCommand}", processCommand);
+		ConsoleLogger.LogDebug("Run and wait process: {ProcessCommand}", processCommand);
 
 		var (exitCode, output) = await RunProcessAndWait(process);
 		process.Dispose();
 
-		_logger?.LogInformation("Process exit code: {ProcessExitCode}. Process command: {ProcessCommand}", exitCode, processCommand);
+		ConsoleLogger.LogInformation("Process exit code: {ProcessExitCode}. Process command: {ProcessCommand}", exitCode, processCommand);
 
 		return (exitCode, output);
 	}

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
-using Microsoft.Extensions.Logging;
 using Tenogy.Tools.FluentMigrator.Helpers;
 
 namespace Tenogy.Tools.FluentMigrator.Services;
@@ -15,21 +14,16 @@ public interface IProjectSearchService
 
 public sealed class ProjectSearchService : IProjectSearchService
 {
-	private readonly ILogger<ProjectSearchService>? _logger;
+	public static readonly ProjectSearchService Default = new();
 
-	public static readonly ProjectSearchService Default = new(null);
-
-	public ProjectSearchService(
-		ILogger<ProjectSearchService>? logger
-	)
+	public ProjectSearchService()
 	{
-		_logger = logger;
 	}
 
 	public FileInfo Search(string? rootDirectoryPath)
 	{
 		ConsoleColored.WriteMutedLine("Trying to find a project...");
-		_logger?.LogDebug("Trying to find FluentMigrator project in directory '{RootDirectoryPath}'...", rootDirectoryPath);
+		ConsoleLogger.LogDebug("Trying to find FluentMigrator project in directory '{RootDirectoryPath}'...", rootDirectoryPath);
 
 		if (string.IsNullOrWhiteSpace(rootDirectoryPath))
 		{
@@ -47,19 +41,19 @@ public sealed class ProjectSearchService : IProjectSearchService
 
 		if (IsProjectDirectory(rootDirectory))
 		{
-			_logger?.LogDebug("Root directory '{RootDirectoryPath}' contains project...", rootDirectory.FullName);
+			ConsoleLogger.LogDebug("Root directory '{RootDirectoryPath}' contains project...", rootDirectory.FullName);
 			var fileInfo = rootDirectory.GetFiles("*.csproj").First();
 
 			if (IsFluentMigratorProject(fileInfo) == true)
 			{
-				_logger?.LogDebug("And it is a FluentMigrator project!");
+				ConsoleLogger.LogDebug("And it is a FluentMigrator project!");
 				return ReturnResult(fileInfo);
 			}
 
-			_logger?.LogDebug("But it is not FluentMigrator project");
+			ConsoleLogger.LogDebug("But it is not FluentMigrator project");
 		}
 
-		_logger?.LogDebug("Trying find solution directory at root of '{RootDirectoryPath}'...", rootDirectory.FullName);
+		ConsoleLogger.LogDebug("Trying find solution directory at root of '{RootDirectoryPath}'...", rootDirectory.FullName);
 		rootDirectory = TryFindSolutionDirectory(rootDirectory);
 
 		if (rootDirectory == null)
@@ -68,7 +62,7 @@ public sealed class ProjectSearchService : IProjectSearchService
 			throw new DirectoryNotFoundException("The directory with the solution was not found.");
 		}
 
-		_logger?.LogDebug("Trying to find FluentMigrator projects in the directory '{RootDirectoryPath}' with the solution ...", rootDirectory.FullName);
+		ConsoleLogger.LogDebug("Trying to find FluentMigrator projects in the directory '{RootDirectoryPath}' with the solution ...", rootDirectory.FullName);
 		var fileInfos = TryFindFluentMigratorProjects(rootDirectory);
 
 		if (!fileInfos.Any())
@@ -89,7 +83,7 @@ public sealed class ProjectSearchService : IProjectSearchService
 		FileInfo ReturnResult(FileInfo f)
 		{
 			ConsoleColored.WriteInfoLine($"Project found: {f.Name}");
-			_logger?.LogInformation("The project was found '{ProjectPath}'", f.FullName);
+			ConsoleLogger.LogInformation("The project was found '{ProjectPath}'", f.FullName);
 			return f;
 		}
 	}
@@ -133,7 +127,7 @@ public sealed class ProjectSearchService : IProjectSearchService
 		}
 		catch (Exception e)
 		{
-			_logger?.LogWarning(e, "Can't define that project is FluentMigrator");
+			ConsoleLogger.LogWarning(e, "Can't define that project is FluentMigrator");
 			return null;
 		}
 	}

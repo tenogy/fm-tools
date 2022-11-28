@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using CommandLine;
+using Tenogy.Tools.FluentMigrator.Options;
 
-namespace Tenogy.Tools.FluentMigrator.UpdateDatabase.Console;
+namespace Tenogy.Tools.FluentMigrator.UpdateDatabase;
 
-internal sealed class Arguments
+internal sealed class Arguments : IArguments
 {
 	[Option('s', "script", HelpText = "Generate an SQL file without updating the database.")]
 	public bool Script { get; set; }
@@ -22,7 +23,7 @@ internal sealed class Arguments
 	public bool Verbose { get; set; }
 
 	[Option("environment", Hidden = true)]
-	public bool Environment { get; set; }
+	public string? Environment { get; set; }
 
 	public static Arguments? Create(IEnumerable<string> args)
 	{

@@ -2,7 +2,6 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Microsoft.Extensions.Logging;
 using Tenogy.Tools.FluentMigrator.Helpers;
 
 namespace Tenogy.Tools.FluentMigrator.Services;
@@ -14,21 +13,16 @@ public interface IDatabaseProcessorTypeService
 
 public sealed class DatabaseProcessorTypeService : IDatabaseProcessorTypeService
 {
-	private readonly ILogger<DatabaseProcessorTypeService>? _logger;
+	public static readonly DatabaseProcessorTypeService Default = new();
 
-	public static readonly DatabaseProcessorTypeService Default = new(null);
-
-	public DatabaseProcessorTypeService(
-		ILogger<DatabaseProcessorTypeService>? logger
-	)
+	public DatabaseProcessorTypeService()
 	{
-		_logger = logger;
 	}
 
 	public string Get(string connectionString, string? processorType)
 	{
 		ConsoleColored.WriteMutedLine("Trying to determine the type of database...");
-		_logger?.LogDebug("Trying to determine the type of database ({ProcessorType})...", processorType);
+		ConsoleLogger.LogDebug("Trying to determine the type of database ({ProcessorType})...", processorType);
 
 		var result = !string.IsNullOrWhiteSpace(processorType)
 			? GetProcessorTypeFromOptions(processorType!)
@@ -41,7 +35,7 @@ public sealed class DatabaseProcessorTypeService : IDatabaseProcessorTypeService
 		}
 
 		ConsoleColored.WriteInfoLine($"Database type: {result}");
-		_logger?.LogInformation("The database type '{ProcessorType}' has been successfully determined", result);
+		ConsoleLogger.LogInformation("The database type '{ProcessorType}' has been successfully determined", result);
 		return result!;
 	}
 

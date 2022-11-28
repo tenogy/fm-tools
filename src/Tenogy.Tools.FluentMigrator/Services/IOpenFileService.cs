@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using Tenogy.Tools.FluentMigrator.Helpers;
 
 namespace Tenogy.Tools.FluentMigrator.Services;
@@ -17,22 +16,19 @@ public interface IOpenFileService
 public sealed class OpenFileService : IOpenFileService
 {
 	private readonly IProcessRunnerService _processRunnerService;
-	private readonly ILogger<OpenFileService>? _logger;
 
-	public static readonly OpenFileService Default = new(null, null);
+	public static readonly OpenFileService Default = new(null);
 
 	public OpenFileService(
-		ILogger<OpenFileService>? logger,
 		IProcessRunnerService? processRunner
 	)
 	{
-		_logger = logger;
 		_processRunnerService = processRunner ?? ProcessRunnerService.Default;
 	}
 
 	public async Task Open(FileInfo fileInfo)
 	{
-		_logger?.LogDebug("Trying open a file '{FileToOpenPath}'...", fileInfo.FullName);
+		ConsoleLogger.LogDebug("Trying open a file '{FileToOpenPath}'...", fileInfo.FullName);
 
 		var filePath = fileInfo.FullName;
 		var arguments = '"' + filePath.Replace("\"", "\\\"") + '"';
@@ -92,7 +88,7 @@ public sealed class OpenFileService : IOpenFileService
 
 	private EnumIde GetIde()
 	{
-		_logger?.LogDebug("Trying to determine which IDE the tool was launched...");
+		ConsoleLogger.LogDebug("Trying to determine which IDE the tool was launched...");
 
 		var process = Process.GetCurrentProcess();
 
@@ -111,7 +107,7 @@ public sealed class OpenFileService : IOpenFileService
 			}
 			catch (Exception e)
 			{
-				_logger?.LogError(e, "Failed determine which IDE the tool was running in.");
+				ConsoleLogger.LogError(e, "Failed determine which IDE the tool was running in.");
 				break;
 			}
 		}

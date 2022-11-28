@@ -5,12 +5,10 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
-using Microsoft.Extensions.Logging;
 using Tenogy.Tools.FluentMigrator.Helpers;
 using Tenogy.Tools.FluentMigrator.Services;
 
-// ReSharper disable once CheckNamespace
-namespace Tenogy.Tools.FluentMigrator;
+namespace Tenogy.Tools.FluentMigrator.AddMigration;
 
 public interface IAddMigrationTool
 {
@@ -21,19 +19,16 @@ public interface IAddMigrationTool
 
 public sealed class AddMigrationTool : IAddMigrationTool
 {
-	private readonly ILogger<AddMigrationTool>? _logger;
 	private readonly IProjectSearchService _projectSearchService;
 	private readonly IOpenFileService _openFileService;
 
-	public static readonly AddMigrationTool Default = new(null, null, null);
+	public static readonly AddMigrationTool Default = new(null, null);
 
 	public AddMigrationTool(
-		ILogger<AddMigrationTool>? logger,
 		IProjectSearchService? projectFinder,
 		IOpenFileService? openFile
 	)
 	{
-		_logger = logger;
 		_projectSearchService = projectFinder ?? ProjectSearchService.Default;
 		_openFileService = openFile ?? OpenFileService.Default;
 	}
@@ -48,7 +43,7 @@ public sealed class AddMigrationTool : IAddMigrationTool
 	public async Task<FileInfo> AddAndOpen(string migrationName)
 	{
 		var migrationFile = await AddMigration(migrationName);
-		_logger?.LogDebug("Trying open a file '{MigrationFilePath}'...", migrationFile.FullName);
+		ConsoleLogger.LogDebug("Trying open a file '{MigrationFilePath}'...", migrationFile.FullName);
 		await _openFileService.Open(migrationFile);
 		ConsoleColored.WriteSuccessLine("Migration creation has been completed successfully.");
 		return migrationFile;
@@ -113,7 +108,7 @@ public sealed class AddMigrationTool : IAddMigrationTool
 	private void ValidateMigrationFile(MigrationFile migrationFile)
 	{
 		ConsoleColored.WriteMutedLine("Trying to create a migration file...");
-		_logger?.LogDebug("Trying to create a migration file '{MigrationFileName}'...", migrationFile.Name);
+		ConsoleLogger.LogDebug("Trying to create a migration file '{MigrationFileName}'...", migrationFile.Name);
 
 		if (!migrationFile.FileInfo.Directory!.Exists)
 			Directory.CreateDirectory(migrationFile.FileInfo.Directory.FullName);
@@ -163,7 +158,7 @@ namespace {migrationFile.NameSpace}.Migrations{(needBraces ? "" : ";")}
 		});
 
 		ConsoleColored.WriteInfoLine("The migration file was created successfully.");
-		_logger?.LogInformation("The migration file was created in the directory '{MigrationFilePath}'", migrationFile.FileInfo.FullName);
+		ConsoleLogger.LogInformation("The migration file was created in the directory '{MigrationFilePath}'", migrationFile.FileInfo.FullName);
 	}
 
 	private sealed class MigrationFile

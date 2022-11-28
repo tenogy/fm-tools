@@ -1,5 +1,4 @@
-// ReSharper disable once CheckNamespace
-namespace Tenogy.Tools.FluentMigrator.Options;
+namespace Tenogy.Tools.FluentMigrator.UpdateDatabase.Options;
 
 public sealed class FluentMigratorRunnerOptions
 {

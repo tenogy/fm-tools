@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
-using Microsoft.Extensions.Logging;
 using Tenogy.Tools.FluentMigrator.Helpers;
 
 namespace Tenogy.Tools.FluentMigrator.Services;
@@ -15,24 +14,21 @@ public interface IProjectBuilderService
 
 public sealed class ProjectBuilderService : IProjectBuilderService
 {
-	private readonly ILogger<ProjectBuilderService>? _logger;
 	private readonly IProcessRunnerService _processRunnerService;
 
-	public static readonly ProjectBuilderService Default = new(null, null);
+	public static readonly ProjectBuilderService Default = new(null);
 
 	public ProjectBuilderService(
-		ILogger<ProjectBuilderService>? logger,
 		IProcessRunnerService? processRunner
 	)
 	{
-		_logger = logger;
 		_processRunnerService = processRunner ?? ProcessRunnerService.Default;
 	}
 
 	public async Task<FileInfo> Build(string csProjFilePath)
 	{
 		ConsoleColored.WriteMutedLine("Trying to build a project...");
-		_logger?.LogDebug("Trying to build a project '{CsProjFilePath}'...", csProjFilePath);
+		ConsoleLogger.LogDebug("Trying to build a project '{CsProjFilePath}'...", csProjFilePath);
 
 		if (string.IsNullOrWhiteSpace(csProjFilePath))
 		{
@@ -59,7 +55,7 @@ public sealed class ProjectBuilderService : IProjectBuilderService
 			GetSolutionAssemblyName(csProjFile)
 		));
 
-		_logger?.LogDebug("The project will be built into a folder: {ProjectAssemblyPath}", outputPath.Directory!.FullName);
+		ConsoleLogger.LogDebug("The project will be built into a folder: {ProjectAssemblyPath}", outputPath.Directory!.FullName);
 
 		var (exitCode, output) = await _processRunnerService.RunAndWait("dotnet", string.Join(" ",
 			"build",
@@ -76,7 +72,7 @@ public sealed class ProjectBuilderService : IProjectBuilderService
 			}
 
 			ConsoleColored.WriteInfoLine("The project was successfully built.");
-			_logger?.LogInformation("The project '{ProjectName}' was successfully built", csProjFile.Name);
+			ConsoleLogger.LogInformation("The project '{ProjectName}' was successfully built", csProjFile.Name);
 			return outputPath;
 		}
 
