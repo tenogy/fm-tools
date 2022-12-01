@@ -178,7 +178,7 @@ namespace {migrationFile.NameSpace}.Migrations{(needBraces ? "" : ";")}
 			var doc = new XmlDocument();
 			doc.Load(project.FullName);
 
-			NameSpace = GetNameSpace() ?? project.Name;
+			NameSpace = GetNameSpace() ?? Path.GetFileNameWithoutExtension(project.Name);
 			NeedNameSpaceBraces = GetNeedNameSpaceBraces() ?? false;
 			Version = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
 			Name = name;
