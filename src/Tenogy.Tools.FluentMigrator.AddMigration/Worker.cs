@@ -4,7 +4,7 @@ using Tenogy.Tools.FluentMigrator.Helpers;
 
 namespace Tenogy.Tools.FluentMigrator.AddMigration;
 
-internal class Worker
+internal sealed class Worker
 {
 	private readonly Arguments? _arguments;
 

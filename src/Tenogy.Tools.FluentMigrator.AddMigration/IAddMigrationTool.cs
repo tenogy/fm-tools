@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -10,27 +11,37 @@ using Tenogy.Tools.FluentMigrator.Services;
 
 namespace Tenogy.Tools.FluentMigrator.AddMigration;
 
-public interface IAddMigrationTool
+internal interface IAddMigrationTool
 {
 	Task<FileInfo> Add(string migrationName);
 
 	Task<FileInfo> AddAndOpen(string migrationName);
 }
 
-public sealed class AddMigrationTool : IAddMigrationTool
+internal sealed partial class AddMigrationTool : IAddMigrationTool
 {
 	private readonly IProjectSearchService _projectSearchService;
 	private readonly IOpenFileService _openFileService;
+	private readonly IEnumerable<IMigrationUpTemplate> _migrationUpTemplates;
 
-	public static readonly AddMigrationTool Default = new(null, null);
+	[GeneratedRegex("^(?!$)", RegexOptions.Multiline)]
+	private static partial Regex RegexLineStart();
+
+	public static readonly AddMigrationTool Default = new(null, null, null);
 
 	public AddMigrationTool(
 		IProjectSearchService? projectFinder,
-		IOpenFileService? openFile
+		IOpenFileService? openFile,
+		IEnumerable<IMigrationUpTemplate>? migrationUpTemplates
 	)
 	{
 		_projectSearchService = projectFinder ?? ProjectSearchService.Default;
 		_openFileService = openFile ?? OpenFileService.Default;
+		_migrationUpTemplates = migrationUpTemplates ?? new[]
+		{
+			CreateTableTemplate.Default,
+			AlterTableTemplate.Default
+		};
 	}
 
 	public async Task<FileInfo> Add(string migrationName)
@@ -127,13 +138,14 @@ public sealed class AddMigrationTool : IAddMigrationTool
 	private async Task SaveMigrationFile(MigrationFile migrationFile)
 	{
 		var needBraces = migrationFile.NeedNameSpaceBraces;
+		var template = GetUpTemplate(migrationFile.Name);
 
 		var classWrap = $@"
 [Migration({migrationFile.Version})]
 public class {migrationFile.Name} : Migration
 {{
 	public override void Up()
-	{{
+	{{{template}
 	}}
 
 	public override void Down()
@@ -143,7 +155,7 @@ public class {migrationFile.Name} : Migration
 ".Trim();
 
 		if (needBraces)
-			classWrap = new Regex("^(?!$)", RegexOptions.Multiline).Replace(classWrap, "\t");
+			classWrap = RegexLineStart().Replace(classWrap, "\t");
 
 		await Task.Run(() =>
 		{
@@ -215,6 +227,30 @@ namespace {migrationFile.NameSpace}.Migrations{(needBraces ? "" : ";")}
 				}
 			}
 		}
+	}
+
+	#endregion
+
+	#region Templates
+
+	private string? GetUpTemplate(string migrationName)
+	{
+		if (string.IsNullOrWhiteSpace(migrationName)) return null;
+
+		string? result = null;
+
+		foreach (var template in _migrationUpTemplates)
+		{
+			result = template.GetUp(migrationName);
+
+			if (!string.IsNullOrWhiteSpace(result))
+				break;
+		}
+
+		if (string.IsNullOrWhiteSpace(result))
+			return null;
+
+		return "\n" + RegexLineStart().Replace(result, "\t\t");
 	}
 
 	#endregion

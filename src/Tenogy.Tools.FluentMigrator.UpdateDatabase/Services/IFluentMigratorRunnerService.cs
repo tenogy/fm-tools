@@ -13,12 +13,12 @@ using Tenogy.Tools.FluentMigrator.UpdateDatabase.Options;
 
 namespace Tenogy.Tools.FluentMigrator.UpdateDatabase.Services;
 
-public interface IFluentMigratorRunnerService
+internal interface IFluentMigratorRunnerService
 {
 	void Run(FluentMigratorRunnerOptions options);
 }
 
-public sealed class FluentMigratorRunnerService : IFluentMigratorRunnerService
+internal sealed class FluentMigratorRunnerService : IFluentMigratorRunnerService
 {
 	private readonly IVersionTableFinderService _versionTableFinderService;
 

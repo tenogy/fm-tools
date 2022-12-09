@@ -8,14 +8,14 @@ using Tenogy.Tools.FluentMigrator.UpdateDatabase.Services;
 // ReSharper disable once CheckNamespace
 namespace Tenogy.Tools.FluentMigrator;
 
-public interface IUpdateDatabaseTool
+internal interface IUpdateDatabaseTool
 {
 	Task Update(string? assemblyPath, string? processorType, string? connectionString);
 
 	Task<FileInfo> UpdateAndOpen(string? assemblyPath, string? processorType, string? connectionString);
 }
 
-public sealed class UpdateDatabaseTool : IUpdateDatabaseTool
+internal sealed class UpdateDatabaseTool : IUpdateDatabaseTool
 {
 	private readonly IProjectAssemblySearchService _projectAssemblySearchService;
 	private readonly IProjectAppSettingsService _projectAppSettingsService;

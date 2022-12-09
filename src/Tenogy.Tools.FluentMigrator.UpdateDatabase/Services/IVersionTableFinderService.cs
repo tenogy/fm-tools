@@ -7,12 +7,12 @@ using Tenogy.Tools.FluentMigrator.Helpers;
 
 namespace Tenogy.Tools.FluentMigrator.UpdateDatabase.Services;
 
-public interface IVersionTableFinderService
+internal interface IVersionTableFinderService
 {
 	IVersionTableMetaData? Search(FileInfo assemblyFileInfo);
 }
 
-public sealed class VersionTableFinderService : IVersionTableFinderService
+internal sealed class VersionTableFinderService : IVersionTableFinderService
 {
 	public static readonly VersionTableFinderService Default = new();
 

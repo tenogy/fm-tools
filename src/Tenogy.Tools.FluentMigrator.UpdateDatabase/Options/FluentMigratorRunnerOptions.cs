@@ -1,6 +1,6 @@
 namespace Tenogy.Tools.FluentMigrator.UpdateDatabase.Options;
 
-public sealed class FluentMigratorRunnerOptions
+internal sealed class FluentMigratorRunnerOptions
 {
 	// -- assembly: The assembly containing the migrations you want to execute.
 	public string TargetAssembly { get; set; } = "";
