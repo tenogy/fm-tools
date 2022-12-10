@@ -7,7 +7,7 @@ namespace Tenogy.Tools.FluentMigrator.Services;
 
 public interface IProjectAssemblySearchService
 {
-	Task<FileInfo> Search(string? projectAssemblyPath, bool ignoreFindProject);
+	Task<(FileInfo projectAssembly, FileInfo? project)> Search(string? projectAssemblyPath, bool ignoreFindProject);
 }
 
 public sealed class ProjectAssemblySearchService : IProjectAssemblySearchService
@@ -26,15 +26,17 @@ public sealed class ProjectAssemblySearchService : IProjectAssemblySearchService
 		_projectBuilderService = projectBuilder ?? ProjectBuilderService.Default;
 	}
 
-	public async Task<FileInfo> Search(string? projectAssemblyPath, bool ignoreFindProject)
+	public async Task<(FileInfo projectAssembly, FileInfo? project)> Search(string? projectAssemblyPath, bool ignoreFindProject)
 	{
+		FileInfo? project = null;
+
 		ConsoleLogger.LogDebug("Trying to find the FluentMigrator project assembly '{ProjectAssemblyPath}'...", projectAssemblyPath);
 
 		if (string.IsNullOrWhiteSpace(projectAssemblyPath) && !ignoreFindProject)
 		{
 			ConsoleLogger.LogDebug("The path to build the project is not specified, trying to find the project and build it...");
 
-			var project = _projectSearchService.Search(Environment.CurrentDirectory);
+			project = _projectSearchService.Search(Environment.CurrentDirectory);
 			projectAssemblyPath = (await _projectBuilderService.Build(project.FullName)).FullName;
 		}
 
@@ -56,6 +58,6 @@ public sealed class ProjectAssemblySearchService : IProjectAssemblySearchService
 
 		ConsoleColored.WriteInfoLine("Project assembly found: " + fileInfo.Name);
 		ConsoleLogger.LogInformation("The assembled project was found in the directory '{ProjectAssemblyPath}'", projectAssemblyPath);
-		return fileInfo;
+		return (fileInfo, project);
 	}
 }

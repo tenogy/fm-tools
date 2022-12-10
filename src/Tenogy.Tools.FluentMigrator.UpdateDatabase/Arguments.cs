@@ -10,6 +10,9 @@ internal sealed class Arguments : IArguments
 	[Option('s', "script", HelpText = "Generate an SQL file without updating the database.")]
 	public bool Script { get; set; }
 
+	[Option('f', "files", HelpText = "Split the generated SQL file into migration files. Argument 'script' required.")]
+	public bool ScriptFiles { get; set; }
+
 	[Option('a', "assembly", HelpText = "The path to the assembled FluentMigrator project.")]
 	public string? AssemblyPath { get; set; }
 

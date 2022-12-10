@@ -1,5 +1,6 @@
 # Test Migrations
 Src/MigrationsProject/Migrations
+Src/MigrationsProject/@Scripts
 
 # User files
 *.rsuser

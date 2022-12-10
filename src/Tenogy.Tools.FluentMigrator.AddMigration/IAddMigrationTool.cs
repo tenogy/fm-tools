@@ -116,7 +116,7 @@ internal sealed partial class AddMigrationTool : IAddMigrationTool
 		return true;
 	}
 
-	private void ValidateMigrationFile(MigrationFile migrationFile)
+	private static void ValidateMigrationFile(MigrationFile migrationFile)
 	{
 		ConsoleColored.WriteMutedLine("Trying to create a migration file...");
 		ConsoleLogger.LogDebug("Trying to create a migration file '{MigrationFileName}'...", migrationFile.Name);

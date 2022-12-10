@@ -25,7 +25,7 @@ internal sealed class Worker
 			ConsoleLogger.LogInformation("Start UpdateDatabase...");
 
 			if (_arguments.Script)
-				await UpdateDatabaseTool.Default.UpdateAndOpen(_arguments.AssemblyPath, _arguments.ProcessorType, _arguments.ConnectionString);
+				await UpdateDatabaseTool.Default.UpdateAndOpen(_arguments.AssemblyPath, _arguments.ProcessorType, _arguments.ConnectionString, _arguments.ScriptFiles);
 			else
 				await UpdateDatabaseTool.Default.Update(_arguments.AssemblyPath, _arguments.ProcessorType, _arguments.ConnectionString);
 
