@@ -36,13 +36,23 @@ public sealed class OpenFileService : IOpenFileService
 		if (!File.Exists(filePath))
 		{
 			ConsoleColored.WriteDangerLine("The file does not exist.");
-			throw new FileNotFoundException("The file does not exist11.", filePath);
+			throw new FileNotFoundException("The file does not exist.", filePath);
 		}
 
 		if (Environment.OSVersion.Platform == PlatformID.Unix)
 		{
-			ConsoleColored.WriteMutedLine($"Opening the file: {fileInfo.Name}");
-			await _processRunnerService.Run("open", arguments);
+			var riderPath = GetMacOsRiderPath();
+
+			if (!string.IsNullOrWhiteSpace(riderPath))
+			{
+				ConsoleColored.WriteMutedLine($"Opening the file in Rider: {fileInfo.Name}");
+				await _processRunnerService.Run(riderPath, arguments);
+				return;
+			}
+
+			ConsoleColored.WriteMutedLine($"Opening the file in Rider: {fileInfo.Name}");
+			await _processRunnerService.Run("open", arguments, true);
+
 			return;
 		}
 
@@ -60,12 +70,13 @@ public sealed class OpenFileService : IOpenFileService
 				break;
 			case EnumIde.Rider:
 			{
-				var rider64Path = GetRider64Path();
+				var riderPath = GetWindowsRiderPath();
 
-				if (string.IsNullOrWhiteSpace(rider64Path)) goto case EnumIde.Unknown;
+				if (string.IsNullOrWhiteSpace(riderPath))
+					goto case EnumIde.Unknown;
 
 				ConsoleColored.WriteMutedLine($"Opening the file in Rider: {fileInfo.Name}");
-				await _processRunnerService.Run(rider64Path!, arguments, true);
+				await _processRunnerService.Run(riderPath, arguments, true);
 			}
 				break;
 			case EnumIde.Unknown:
@@ -148,29 +159,45 @@ public sealed class OpenFileService : IOpenFileService
 		}
 	}
 
-	private static string? GetRider64Path()
+	private static string? GetWindowsRiderPath()
 	{
-		var rider64Path = (Environment.GetEnvironmentVariable("PATH") ?? "")
-			.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
-			.Where(x => !string.IsNullOrWhiteSpace(x))
-			.Select(x => Path.Combine(x.Trim(), "rider64.exe"))
-			.Where(File.Exists)
-			.FirstOrDefault() ?? GetFromProgramFiles();
-
-		return string.IsNullOrWhiteSpace(rider64Path) ? null : '"' + rider64Path + '"';
+		const string fileName = "rider64.exe";
+		return GetFromPathEnvironment(fileName, true) ?? GetFromProgramFiles();
 
 		string? GetFromProgramFiles()
 		{
 			var programFiles = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "JetBrains"));
 			if (!programFiles.Exists) return null;
 
-			var version = programFiles.GetDirectories("JetBrains Rider*").OrderByDescending(x => x.Name).FirstOrDefault();
-			if (version == null) return null;
+			var version = programFiles
+				.GetDirectories("JetBrains Rider*")
+				.MaxBy(x => x.Name);
 
-			var result = Path.Combine(version.FullName, "bin", "rider64.exe");
+			if (version == null)
+				return null;
 
-			return File.Exists(result) ? result : null;
+			var result = Path.Combine(version.FullName, "bin", fileName);
+
+			return File.Exists(result) ? '"' + result + '"' : null;
 		}
+	}
+
+	private static string? GetMacOsRiderPath()
+		=> GetFromPathEnvironment("rider", false);
+
+	private static string? GetFromPathEnvironment(string fileName, bool withQuotes)
+	{
+		var path = (Environment.GetEnvironmentVariable("PATH") ?? "")
+			.Split(new[] { ';', ':' }, StringSplitOptions.RemoveEmptyEntries)
+			.Where(x => !string.IsNullOrWhiteSpace(x))
+			.Select(x => Path.Combine(x.Trim(), fileName))
+			.Where(File.Exists)
+			.FirstOrDefault();
+
+		if (string.IsNullOrWhiteSpace(path))
+			return null;
+
+		return withQuotes ? '"' + path + '"' : path;
 	}
 
 	#endregion
