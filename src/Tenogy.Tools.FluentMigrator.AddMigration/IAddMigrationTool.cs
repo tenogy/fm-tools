@@ -40,6 +40,7 @@ internal sealed partial class AddMigrationTool : IAddMigrationTool
 		_migrationUpTemplates = migrationUpTemplates ?? new[]
 		{
 			CreateTableTemplate.Default,
+			AlterTableAddAlterColumnTemplate.Default,
 			AlterTableTemplate.Default
 		};
 	}
