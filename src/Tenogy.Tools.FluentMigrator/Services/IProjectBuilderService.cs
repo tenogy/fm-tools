@@ -52,15 +52,17 @@ public sealed class ProjectBuilderService : IProjectBuilderService
 			"bin",
 			configuration,
 			targetFramework,
+			"publish",
 			GetSolutionAssemblyName(csProjFile)
 		));
 
 		ConsoleLogger.LogDebug("The project will be built into a folder: {ProjectAssemblyPath}", outputPath.Directory!.FullName);
 
 		var (exitCode, output) = await _processRunnerService.RunAndWait("dotnet", string.Join(" ",
-			"build",
+			"publish",
 			$@"""{csProjFile.FullName}""",
-			"-c " + configuration
+			"-c " + configuration,
+			$@"-o ""{outputPath.Directory!.FullName}"""
 		));
 
 		if (exitCode == 0)

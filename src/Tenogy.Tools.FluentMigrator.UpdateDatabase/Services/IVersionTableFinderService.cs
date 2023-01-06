@@ -17,9 +17,9 @@ internal sealed class VersionTableFinderService : IVersionTableFinderService
 	public static readonly VersionTableFinderService Default = new();
 
 	public IVersionTableMetaData? Search(FileInfo assemblyFileInfo)
-		=> FindInAssembly(Assembly.LoadFrom(assemblyFileInfo.FullName)) ?? TryFindInTenogyAppFluentMigrator(assemblyFileInfo.Directory!);
+		=> FindInAssembly(Assembly.LoadFrom(assemblyFileInfo.FullName)) ?? TryFindInTenogyFluentMigrator(assemblyFileInfo.Directory!);
 
-	private IVersionTableMetaData? FindInAssembly(Assembly assembly)
+	private static IVersionTableMetaData? FindInAssembly(Assembly assembly)
 	{
 		ConsoleLogger.LogDebug("Trying to find IVersionTableMetaData in assembly '{Assembly}'...", assembly.FullName);
 
@@ -36,9 +36,13 @@ internal sealed class VersionTableFinderService : IVersionTableFinderService
 		return Activator.CreateInstance(type) as IVersionTableMetaData;
 	}
 
-	private IVersionTableMetaData? TryFindInTenogyAppFluentMigrator(FileSystemInfo directoryInfo)
+	private static IVersionTableMetaData? TryFindInTenogyFluentMigrator(FileSystemInfo directoryInfo)
 	{
-		var assemblyFileInfo = new FileInfo(Path.Combine(directoryInfo.FullName, "Tenogy.App.FluentMigrator.dll"));
+		var assemblyFileInfo = new FileInfo(Path.Combine(directoryInfo.FullName, "Tenogy.FluentMigrator.dll"));
+
+		if (!assemblyFileInfo.Exists)
+			assemblyFileInfo = new FileInfo(Path.Combine(directoryInfo.FullName, "Tenogy.App.FluentMigrator.dll"));
+
 		return !assemblyFileInfo.Exists ? null : FindInAssembly(Assembly.LoadFrom(assemblyFileInfo.FullName));
 	}
 }

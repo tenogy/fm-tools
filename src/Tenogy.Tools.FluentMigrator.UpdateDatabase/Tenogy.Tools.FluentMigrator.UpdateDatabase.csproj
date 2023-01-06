@@ -9,7 +9,7 @@
 		<PackAsTool>true</PackAsTool>
 		<ToolCommandName>update-database</ToolCommandName>
 		<PackageOutputPath>./../../dist/nupkg</PackageOutputPath>
-		<Version>1.0.1</Version>
+		<Version>1.0.2</Version>
 	</PropertyGroup>
 
 	<ItemGroup>

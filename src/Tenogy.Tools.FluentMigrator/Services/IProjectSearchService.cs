@@ -67,7 +67,7 @@ public sealed class ProjectSearchService : IProjectSearchService
 
 		if (!fileInfos.Any())
 		{
-			ConsoleColored.WriteDangerLine("Projects could not be found in the solution directory. Install the NuGet FluentMigrator or Tenogy.App.FluentMigrator package into your project.");
+			ConsoleColored.WriteDangerLine("Projects could not be found in the solution directory. Install the NuGet FluentMigrator or Tenogy.FluentMigrator package into your project.");
 			throw new FileNotFoundException($"FluentMigrator projects could not be found in the solution directory '{rootDirectory.FullName}'.");
 		}
 
@@ -119,6 +119,7 @@ public sealed class ProjectSearchService : IProjectSearchService
 
 					if (name.Equals("Include", StringComparison.OrdinalIgnoreCase) != true) continue;
 					if (value.StartsWith("FluentMigrator", StringComparison.OrdinalIgnoreCase)) return true;
+					if (value.StartsWith("Tenogy.FluentMigrator", StringComparison.OrdinalIgnoreCase)) return true;
 					if (value.StartsWith("Tenogy.App.FluentMigrator", StringComparison.OrdinalIgnoreCase)) return true;
 				}
 			}

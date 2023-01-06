@@ -95,14 +95,16 @@ public sealed class ProjectAppSettingsService : IProjectAppSettingsService
 			throw new InvalidOperationException("In the file appsettings database connection strings not found.");
 		}
 
-		if (connectionStrings.Keys.Count > 1)
+		var isDefault = connectionStrings.ContainsKey("Default");
+
+		if (!isDefault && connectionStrings.Keys.Count > 1)
 		{
 			var keys = string.Join(", ", connectionStrings.Keys.Select(x => "'" + x + "'"));
 			ConsoleColored.WriteDangerLine($"In the file appsettings more than one database connection strings found: {keys}. You can pass the --connection-string flag containing the key of the database connection string.");
 			throw new InvalidOperationException($"In the file appsettings more than one database connection strings found: {keys}");
 		}
 
-		var key = connectionStrings.Keys.First();
+		var key = isDefault ? "Default" : connectionStrings.Keys.First();
 		var value = connectionStrings[key];
 
 		ConsoleColored.WriteInfoLine($"Database connection string: {value}");

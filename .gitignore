@@ -1,7 +1,3 @@
-# Test Migrations
-Src/MigrationsProject/Migrations
-Src/MigrationsProject/@Scripts
-
 # User files
 *.rsuser
 *.sln.docstates
@@ -10,7 +6,6 @@ Src/MigrationsProject/@Scripts
 *.userosscache
 *.userprefs
 
- 
 # Build results
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
