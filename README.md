@@ -77,6 +77,7 @@ update-database
 | Flag                        | Description                                                                         |
 |-----------------------------|-------------------------------------------------------------------------------------|
 | `-s`, `--script`            | Generate an SQL file without updating the database.                                 |
+| `-f`, `--files`             | Split the generated SQL file into migration files (@scripts directory).             |
 | `-a`, `--assembly`          | The path to the assembled FluentMigrator project.                                   |
 | `-c`, `--connection-string` | Database connection string or key of ConnectionStrings section in appsettings.json. |
 | `-d`, `--database`          | The type of database. Available options: PostgreSql, SqlServer, SqlLite.            |
