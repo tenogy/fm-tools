@@ -11,7 +11,7 @@ Tools for dotnet which helps creation an updating database migrations based on F
 
 Check last version on [nuget.org](https://www.nuget.org/packages/Tenogy.Tools.FluentMigrator.AddMigration)
 ```shell
-dotnet tool install --global Tenogy.Tools.FluentMigrator.AddMigration --version 1.0.1
+dotnet tool install --global Tenogy.Tools.FluentMigrator.AddMigration --version 1.0.2
 ```
 For help:
 ```shell
@@ -36,7 +36,7 @@ add-migration CreateTableTest
 
 Check last version on [nuget.org](https://www.nuget.org/packages/Tenogy.Tools.FluentMigrator.UpdateDatabase)
 ```shell
-dotnet tool install --global Tenogy.Tools.FluentMigrator.UpdateDatabase --version 1.0.1
+dotnet tool install --global Tenogy.Tools.FluentMigrator.UpdateDatabase --version 1.0.2
 ```
 For help:
 ```shell
