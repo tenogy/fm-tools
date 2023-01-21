@@ -1,68 +1,48 @@
 # Tenogy.Tools.FluentMigrator
 
-Tools (commands) for dotnet, with which you can manage migrations in the database. Tools are alternatives for CmdLets. 
+Tools for dotnet which helps creation an updating database migrations based on FluentMigrator.
 
 **Available tools:**
 
-1. `Add-Migration` – Creates a migration for the database in your project/solution.
-2. `Update-Database` – Performs a database update, or generates an SQL query.
+1. `add-migration` – Creates a migration for the database in your project/solution.
+2. `update-database` – Performs a database update, or generates an SQL query.
 
+## add-migration tool
 
-## Manual installation of tools
-
-To manually install the tools, follow these steps:
-
-1. In the terminal, go to the `fm-tools` directory.
-2. Pack projects into NuGet packages using the commands:
+Check last version on [nuget.org](https://www.nuget.org/packages/Tenogy.Tools.FluentMigrator.AddMigration)
 ```shell
-dotnet pack ./src/Tenogy.Tools.FluentMigrator.AddMigration &
-dotnet pack ./src/Tenogy.Tools.FluentMigrator.UpdateDatabase
+dotnet tool install --global Tenogy.Tools.FluentMigrator.AddMigration --version 1.0.1
 ```
-3. Install the tools using the commands:
+For help:
 ```shell
-dotnet tool install --global --add-source ./dist/nupkg Tenogy.Tools.FluentMigrator.AddMigration &
-dotnet tool install --global --add-source ./dist/nupkg Tenogy.Tools.FluentMigrator.UpdateDatabase
+add-migration --help
 ```
-4. If you need to remove the tools, use the commands:
-```shell
-dotnet tool uninstall --global Tenogy.Tools.FluentMigrator.AddMigration &
-dotnet tool uninstall --global Tenogy.Tools.FluentMigrator.UpdateDatabase
-```
-5. Check the functionality of the tools using the commands:
-```shell
-add-migration --help &
-update-database --help
-```
-
-
-## Add-Migration tool
-
-Creates a migration for the database in your project/solution.
-
-### Guide
+### Usage
 
 Open your project or solution in your favorite IDE and run a terminal inside it. Make sure that the working directory is a directory inside your project or solution.
-
-Example of launching the tool:
-
 ```shell
 add-migration CreateTableTest
 ```
 
-### Flags
+### Options
 
-| Flag              | Description                                    |
+| Option              | Description                                    |
 |-------------------|------------------------------------------------|
 | `-s`, `--silent`  | Do not open the migration file after creation. |
 | `-v`, `--verbose` | Enable logging.                                |
 
-All flags are optional.
 
-## Update-Database tool
+## update-database tool
 
-Performs a database update, or generates an SQL query.
-
-### Guide
+Check last version on [nuget.org](https://www.nuget.org/packages/Tenogy.Tools.FluentMigrator.UpdateDatabase)
+```shell
+dotnet tool install --global Tenogy.Tools.FluentMigrator.UpdateDatabase --version 1.0.1
+```
+For help:
+```shell
+update-database --help
+```
+### Usage
 
 Open your project or solution in your favorite IDE and run a terminal inside it. Make sure that the working directory is a directory inside your project or solution.
 
@@ -72,9 +52,9 @@ Example of launching the tool:
 update-database
 ```
 
-### Flags
+### Options
 
-| Flag                        | Description                                                                         |
+| Option                        | Description                                                                         |
 |-----------------------------|-------------------------------------------------------------------------------------|
 | `-s`, `--script`            | Generate an SQL file without updating the database.                                 |
 | `-f`, `--files`             | Split the generated SQL file into migration files (@scripts directory).             |
@@ -83,4 +63,4 @@ update-database
 | `-d`, `--database`          | The type of database. Available options: PostgreSql, SqlServer, SqlLite.            |
 | `-v`, `--verbose`           | Enable logging.                                                                     |
 
-All flags are optional.
+
