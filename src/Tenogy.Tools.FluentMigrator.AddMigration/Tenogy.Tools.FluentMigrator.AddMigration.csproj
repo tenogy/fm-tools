@@ -4,12 +4,12 @@
 		<OutputType>Exe</OutputType>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<LangVersion>11</LangVersion>
-		<TargetFramework>net7.0</TargetFramework>
+		<LangVersion>13</LangVersion>
+		<TargetFramework>net9.0</TargetFramework>
 		<PackAsTool>true</PackAsTool>
 		<ToolCommandName>add-migration</ToolCommandName>
 		<PackageOutputPath>./../../dist/nupkg</PackageOutputPath>
-		<Version>1.0.2</Version>
+		<Version>1.0.3</Version>
 	</PropertyGroup>
 
 	<ItemGroup>

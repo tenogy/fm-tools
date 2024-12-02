@@ -4,12 +4,12 @@
 		<OutputType>Exe</OutputType>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<LangVersion>11</LangVersion>
-		<TargetFramework>net7.0</TargetFramework>
+		<LangVersion>13</LangVersion>
+		<TargetFramework>net9.0</TargetFramework>
 		<PackAsTool>true</PackAsTool>
 		<ToolCommandName>update-database</ToolCommandName>
 		<PackageOutputPath>./../../dist/nupkg</PackageOutputPath>
-		<Version>1.0.2</Version>
+		<Version>1.0.3</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -19,8 +19,8 @@
 	<ItemGroup>
 		<PackageReference Include="CommandLineParser" Version="2.9.1" />
 		<PackageReference Include="FluentMigrator.Runner" Version="3.3.2" />
-		<PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.0" />
-		<PackageReference Include="Npgsql" Version="7.0.0" />
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.0" />
+		<PackageReference Include="Npgsql" Version="9.0.1" />
 	</ItemGroup>
 
 </Project>
