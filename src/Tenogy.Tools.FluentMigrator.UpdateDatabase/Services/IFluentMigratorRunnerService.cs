@@ -73,7 +73,6 @@ internal sealed class FluentMigratorRunnerService : IFluentMigratorRunnerService
 				.AddSqlServer2012()
 				.AddSqlServer2014()
 				.AddSqlServer2016()
-				.AddSqlServerCe()
 				.WithVersionTable(_versionTableFinderService.Search(new FileInfo(options.TargetAssembly)))
 				.WithGlobalCommandTimeout(TimeSpan.FromHours(1))
 			)
